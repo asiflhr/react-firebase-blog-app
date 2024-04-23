@@ -16,11 +16,11 @@ function ListAuthores({ isAuth }) {
   }, [])
 
   return (
-    <div className='homePage'>
+    <div className='authorsPage mx-auto'>
       {authorLists?.length > 0 ? (
         authorLists?.map((user) => (
           <div
-            className='bg-teal-200 text-zinc-800 p-4 rounded-3xl flex flex-col justify-center items-center gap-5'
+            className='bg-teal-200 text-zinc-800 p-4 rounded-3xl flex flex-col justify-center items-center gap-5 w-[270px] min-w-[250px]'
             key={user.id}
           >
             <div className='px-2 font-semibold text-violet-900'>
@@ -37,7 +37,7 @@ function ListAuthores({ isAuth }) {
               )}
             </div>
 
-            <div className='flex flex-col justify-center items-center bg-teal-400 p-3 rounded-lg'>
+            <div className='flex flex-col justify-center bg-teal-400 p-3 rounded-lg w-full'>
               <h1 className='w-full mb-1 font-bold text-xl'>
                 {user?.displayName}
               </h1>
