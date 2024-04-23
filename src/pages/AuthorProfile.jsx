@@ -1,37 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import { initializeApp } from 'firebase/app'
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore'
-
-const firebaseConfig = {
-  // Your firebase configuration goes here
-}
-
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+import { auth, db } from '../firebase-config'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 
 function AuthorProfile({ isAuth }) {
   const [authorData, setAuthorData] = useState(null)
 
   // Get the logged-in user ID from your authentication logic
-  const loggedInUserId = 'YOUR_USER_ID'
+  console.log('auth: ', auth.currentUser)
+
+  const getAuthor = async () => {
+    const authorCollection = collection(db, 'users')
+    const q = query(authorCollection, where('id', '==', auth?.currentUser?.uid))
+    const querySnapshot = await getDocs(q)
+    const data = querySnapshot.docs.map((doc) => doc.data())[0]
+    setAuthorData(data)
+  }
 
   useEffect(() => {
-    const getAuthor = async () => {
-      const authorCollection = collection(db, 'authors')
-      const q = query(authorCollection, where('id', '==', loggedInUserId))
-      const querySnapshot = await getDocs(q)
-      const data = querySnapshot.docs.map((doc) => doc.data())[0]
-      setAuthorData(data)
+    if (auth?.currentUser) {
+      getAuthor()
     }
-
-    getAuthor()
-  }, [])
+  }, [auth])
 
   if (!authorData) {
     return <div>Loading...</div>
