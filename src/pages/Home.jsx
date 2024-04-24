@@ -12,10 +12,15 @@ import {
 
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([])
-  const [showFullContent, setShowFullContent] = useState(false)
+  const [showFullContent, setShowFullContent] = useState({})
   const postsCollectionRef = collection(db, 'posts')
 
-  const toggleContent = () => setShowFullContent(!showFullContent)
+  const toggleContent = (id) => {
+    setShowFullContent((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id], // Toggle the visibility state for the specific post
+    }))
+  }
 
   const deletePost = async (id) => {
     const postDoc = doc(db, 'posts', id)
@@ -56,14 +61,14 @@ function Home({ isAuth }) {
               )}
             </div>
             <div className='postTextContainer px-2 pt-2'>
-              {showFullContent ? (
+              {showFullContent[post.id] ? (
                 <span>{post?.postText}</span>
               ) : (
                 <span>{post?.postText.substring(0, 100)}...</span>
               )}
               {post?.postText.length > 100 && (
                 <button
-                  onClick={toggleContent}
+                  onClick={() => toggleContent(post.id)}
                   className='text-teal-900 font-medium'
                 >
                   {showFullContent ? 'Show Less' : 'Show More'}
