@@ -42,7 +42,7 @@ function Home({ isAuth }) {
           >
             <div className='flex flex-row items-center bg-teal-400 p-2 rounded-lg'>
               <h1 className='w-full mb-1 font-bold text-xl'>{post?.title}</h1>
-              {isAuth && post?.author.id === auth.currentUser.uid && (
+              {isAuth && post?.author.id === auth?.currentUser?.uid && (
                 <div className='bg-teal-800 py-2 px-[14px] rounded-full text-xl text-gray-100'>
                   <button
                     onClick={() => {
