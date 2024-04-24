@@ -22,7 +22,7 @@ function App() {
 
   return (
     <Router>
-      <nav className='navbar'>
+      <nav className='navbar fixed top-0'>
         <Link to='/'> Home </Link>
         <Link to='/list-authors'> List Authors </Link>
         {!isAuth ? (
@@ -30,21 +30,28 @@ function App() {
         ) : (
           <>
             <Link to='/createpost'> Create Post </Link>
-            <button onClick={signUserOut}> Log Out</button>
+            <Link to='/profile'> Profile </Link>
+            <button
+              onClick={signUserOut}
+              className='ml-3 font-bold bg-gradient-to-bl from-rose-800 to-red-600 px-4 py-2 rounded-lg shadow-lg'
+            >
+              Log Out
+            </button>
           </>
         )}
       </nav>
-      <Routes>
-        <Route path='/' element={<Home isAuth={isAuth} />} />
-        <Route path='/login' element={<Login setIsAuth={setIsAuth} />} />
-        <Route path='/createpost' element={<CreatePost isAuth={isAuth} />} />
-        <Route path='/profile' element={<AuthorProfile isAuth={isAuth} />} />
-        <Route
-          path='/list-authors'
-          element={<ListAuthores isAuth={isAuth} />}
-        />
-      </Routes>
-      {/* Hellow work */}
+      <div className='mt-20'>
+        <Routes>
+          <Route path='/' element={<Home isAuth={isAuth} />} />
+          <Route path='/login' element={<Login setIsAuth={setIsAuth} />} />
+          <Route path='/createpost' element={<CreatePost isAuth={isAuth} />} />
+          <Route path='/profile' element={<AuthorProfile isAuth={isAuth} />} />
+          <Route
+            path='/list-authors'
+            element={<ListAuthores isAuth={isAuth} />}
+          />
+        </Routes>
+      </div>
     </Router>
   )
 }

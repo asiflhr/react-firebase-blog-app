@@ -148,6 +148,19 @@ textarea {
   padding-top: 20px;
 }
 
+.profilePage {
+  width: 100%;
+  max-width: 1000px;
+  min-height: calc(100vh - 80px);
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 20px;
+}
+
 .homePage {
   width: 100%;
   min-height: calc(100vh - 80px);

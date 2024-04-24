@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
 import { auth, db } from '../firebase-config'
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'react-share'
 
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([])
@@ -27,7 +35,11 @@ function Home({ isAuth }) {
     <div className='homePage'>
       {postLists?.length > 0 ? (
         postLists?.map((post) => (
-          <div className='post bg-teal-200 text-zinc-800 p-2' key={post.id}>
+          <div
+            id={post?.id}
+            className='post bg-teal-200 text-zinc-800 p-2'
+            key={post.id}
+          >
             <div className='flex flex-row items-center bg-teal-400 p-2 rounded-lg'>
               <h1 className='w-full mb-1 font-bold text-xl'>{post?.title}</h1>
               {isAuth && post?.author.id === auth.currentUser.uid && (
@@ -58,9 +70,35 @@ function Home({ isAuth }) {
                 </button>
               )}
             </div>
-            <h3 className='px-2 font-semibold text-violet-900'>
-              @ {post?.author?.name}
-            </h3>
+            <div className='flex justify-between items-center'>
+              <h3 className='px-2 font-semibold text-violet-900'>
+                @ {post?.author?.name}
+              </h3>
+
+              <div className='flex gap-2 items-center'>
+                <FacebookShareButton
+                  url={`https://pen-craft-react.vercel.app/#${post?.id}`}
+                  quote={post?.title}
+                  hashtag='#penCraft'
+                >
+                  <FacebookIcon size={32} round />
+                </FacebookShareButton>
+                <WhatsappShareButton
+                  url={`https://pen-craft-react.vercel.app/#${post?.id}`}
+                  title={post?.title}
+                  hashtag='#penCraft'
+                >
+                  <WhatsappIcon size={32} round />
+                </WhatsappShareButton>
+                <TwitterShareButton
+                  url={`https://pen-craft-react.vercel.app/#${post?.id}`}
+                  title={post?.title}
+                  hashtag='#penCraft'
+                >
+                  <TwitterIcon size={32} round />
+                </TwitterShareButton>
+              </div>
+            </div>
           </div>
         ))
       ) : (
