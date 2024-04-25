@@ -14,6 +14,7 @@ function CreatePost({ isAuth }) {
     await addDoc(postsCollectionRef, {
       title,
       postText,
+      date: new Date(),
       author: {
         name: auth?.currentUser?.displayName,
         id: auth?.currentUser?.uid,
@@ -29,12 +30,18 @@ function CreatePost({ isAuth }) {
   }, [])
 
   return (
-    <div className='createPostPage'>
-      <div className='cpContainer'>
+    <div className='createPostPage flex justify-center lg:flex-row flex-col gap-10 lg:mt-0 mt-36'>
+      <img
+        src='https://media.istockphoto.com/id/1335774549/photo/night-study-online-learning-woman-typing.jpg?s=612x612&w=0&k=20&c=_ykNUKYdMg77n-YtO3O1qi0MMGP0k4mh-Uhp72dQE-8='
+        alt=''
+        className='rounded-3xl shadow-lg'
+      />
+      <div className='cpContainer rounded-3xl shadow-lg'>
         <h1>Create A Post</h1>
         <div className='inputGp'>
           <label> Title:</label>
           <input
+            className='text-teal-800'
             placeholder='Title...'
             onChange={(event) => {
               setTitle(event.target.value)
@@ -44,6 +51,7 @@ function CreatePost({ isAuth }) {
         <div className='inputGp'>
           <label> Post:</label>
           <textarea
+            className='text-teal-800'
             placeholder='Post...'
             onChange={(event) => {
               setPostText(event.target.value)

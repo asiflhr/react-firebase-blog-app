@@ -10,7 +10,6 @@ function Login({ setIsAuth }) {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log('result: ', result)
         // Check if user exists in the database
         const userRef = doc(db, 'users', result.user.uid)
         getDoc(userRef)
@@ -22,6 +21,7 @@ function Login({ setIsAuth }) {
                 email: result.user.email,
                 displayName: result.user.displayName,
                 photoURL: result.user.photoURL,
+                createdAt: new Date(),
                 // Add any other user properties you want to store
               })
                 .then(() => {

@@ -23,22 +23,34 @@ function App() {
   return (
     <Router>
       <nav className='navbar fixed top-0'>
-        <Link to='/'> Home </Link>
-        <Link to='/list-authors'> List Authors </Link>
-        {!isAuth ? (
-          <Link to='/login'> Login </Link>
-        ) : (
-          <>
-            <Link to='/createpost'> Create Post </Link>
-            <Link to='/profile'> Profile </Link>
-            <button
-              onClick={signUserOut}
-              className='ml-3 font-bold bg-gradient-to-bl from-rose-800 to-red-600 px-4 py-2 rounded-lg shadow-lg'
-            >
-              Log Out
-            </button>
-          </>
-        )}
+        <div className='flex mx-auto max-w-[1000px] justify-between w-full bg-[#eaf8f7] h-full flex-wrap'>
+          <Link to='/'>
+            <img
+              width='150px'
+              src='https://pencraftsa.com.au/cdn/shop/files/Pencraft_Logo_horizointal_30cc703f-0678-470d-9697-5ea1ffddd911.png?v=1680777431&width=2048'
+              alt=''
+            />
+          </Link>
+
+          <div className='flex gap-4 items-center flex-wrap'>
+            <Link to='/'> Home </Link>
+            <Link to='/list-authors'> List Authors </Link>
+            {!isAuth ? (
+              <Link to='/login'> Login </Link>
+            ) : (
+              <>
+                <Link to='/createpost'> Create Post </Link>
+                <Link to='/profile'> Profile </Link>
+                <button
+                  onClick={signUserOut}
+                  className='ml-3 font-bold h-fit bg-gradient-to-bl from-rose-800 to-red-600 px-4 py-2 rounded-lg shadow-lg'
+                >
+                  Log Out
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       </nav>
       <div className='mt-20'>
         <Routes>

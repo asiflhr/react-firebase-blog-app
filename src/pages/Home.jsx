@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { getDocs, collection, deleteDoc, doc } from 'firebase/firestore'
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  doc,
+  orderBy,
+  query,
+  addDoc,
+  setDoc,
+  onSnapshot,
+} from 'firebase/firestore'
 import { auth, db } from '../firebase-config'
 import {
   FacebookIcon,
+  FacebookMessengerIcon,
   FacebookShareButton,
   TwitterIcon,
   TwitterShareButton,
@@ -13,6 +24,8 @@ import {
 function Home({ isAuth }) {
   const [postLists, setPostList] = useState([])
   const [showFullContent, setShowFullContent] = useState({})
+  const [comments, setComments] = useState({})
+  const [commentTexts, setCommentTexts] = useState({})
   const postsCollectionRef = collection(db, 'posts')
 
   const toggleContent = (id) => {
@@ -28,8 +41,82 @@ function Home({ isAuth }) {
   }
 
   const getPosts = async () => {
-    const data = await getDocs(postsCollectionRef)
-    setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    try {
+      // Fetch posts
+      const postsSnapshot = await getDocs(postsCollectionRef)
+      const postsData = postsSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        comments: [], // Initialize comments array for each post
+      }))
+
+      // Fetch comments for each post and set up listeners for real-time updates
+      const postsWithComments = await Promise.all(
+        postsData.map(async (post) => {
+          // Fetch initial comments
+          const commentsSnapshot = await getDocs(
+            collection(db, 'posts', post.id, 'comments')
+          )
+          const commentsData = commentsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          post.comments = commentsData
+
+          // Set up listener for real-time updates to comments
+          const commentsRef = collection(db, 'posts', post.id, 'comments')
+          const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
+            const updatedComments = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+            // Update comments in state
+            setPostList((prevPosts) => {
+              return prevPosts.map((prevPost) => {
+                if (prevPost.id === post.id) {
+                  return { ...prevPost, comments: updatedComments }
+                }
+                return prevPost
+              })
+            })
+          })
+
+          // Save unsubscribe function for cleanup
+          return { ...post, unsubscribe }
+        })
+      )
+
+      // Update state with posts including comments
+      setPostList(postsWithComments)
+    } catch (error) {
+      console.error('Error fetching posts and comments:', error)
+    }
+  }
+
+  console.log('posts lists: ', postLists)
+
+  const handleCommentSubmit = async (postId) => {
+    const user = auth?.currentUser // Assuming you have a way to get the current user
+    const comment = {
+      text: commentTexts[postId],
+      user: {
+        id: user.uid,
+        name: user.displayName,
+      },
+      createdAt: new Date(),
+    }
+
+    // Save the comment to Firestore
+    const commentCollectionRef = collection(db, 'posts', postId, 'comments')
+    const newCommentRef = doc(commentCollectionRef)
+    await setDoc(newCommentRef, comment)
+
+    // Update the local state
+    setComments((prevState) => ({
+      ...prevState,
+      [postId]: [...(prevState[postId] || []), comment],
+    }))
+    setCommentTexts({ ...commentTexts, [postId]: '' })
   }
 
   useEffect(() => {
@@ -42,7 +129,7 @@ function Home({ isAuth }) {
         postLists?.map((post) => (
           <div
             id={post?.id}
-            className='post bg-teal-200 text-zinc-800 p-2'
+            className='post bg-teal-200 text-zinc-800 p-2 h-fit'
             key={post.id}
           >
             <div className='flex flex-row items-center bg-teal-400 p-2 rounded-lg'>
@@ -75,12 +162,34 @@ function Home({ isAuth }) {
                 </button>
               )}
             </div>
-            <div className='flex justify-between items-center'>
-              <h3 className='px-2 font-semibold text-violet-900'>
+            <div className='flex justify-between w-full items-center gap-5 mt-3'>
+              <h3 className='px-2 font-semibold text-violet-900 w-fit'>
                 @ {post?.author?.name}
               </h3>
 
-              <div className='flex gap-2 items-center'>
+              {/* comment text filed here */}
+              <div className='flex flex-1'>
+                <input
+                  className='px-5 py-2 text-sm w-full text-teal-800 rounded-full bg-teal-100 shadow-lg'
+                  type='text'
+                  placeholder='Add a comment...'
+                  value={commentTexts[post?.id] || ''}
+                  onChange={(e) =>
+                    setCommentTexts({
+                      ...commentTexts,
+                      [post.id]: e.target.value,
+                    })
+                  }
+                />
+                <button
+                  className='ml-[-30px]'
+                  onClick={() => handleCommentSubmit(post.id)}
+                >
+                  <FacebookMessengerIcon size={22} round />
+                </button>
+              </div>
+
+              <div className='flex gap-2 items-center w-fit'>
                 <FacebookShareButton
                   url={`https://pen-craft-react.vercel.app/#${post?.id}`}
                   quote={post?.title}
@@ -104,6 +213,23 @@ function Home({ isAuth }) {
                 </TwitterShareButton>
               </div>
             </div>
+
+            {/* Display comments */}
+            {post?.comments?.length > 0 && (
+              <div className='flex gap-2 flex-col bg-teal-100 p-2 mt-4 rounded-xl'>
+                {post?.comments?.map((comment, index) => (
+                  <div
+                    key={index}
+                    className='comment bg-teal-400 rounded-lg py-1 px-2'
+                  >
+                    <p>{comment.text}</p>
+                    <p>
+                      By: <span className='font-bold'>{comment.user.name}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))
       ) : (
