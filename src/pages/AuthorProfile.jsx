@@ -75,7 +75,7 @@ function AuthorProfile({ isAuth }) {
   console.log('profile photo: ', profilePhoto)
 
   return (
-    <div className='profilePage mx-auto px-4 py-8'>
+    <div className='profilePage mx-auto px-4 py-8 bg-violet-200 w-full'>
       {!currentUser ? (
         <div>Loading...</div>
       ) : (
@@ -83,7 +83,7 @@ function AuthorProfile({ isAuth }) {
           <div className='p-2 md:p-4'>
             <div className='w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg'>
               <h2 className='pl-6 text-2xl font-bold sm:text-xl'>
-                Public Profile
+                Author's Public Profile
               </h2>
 
               <div className='grid max-w-2xl mx-auto mt-8'>
@@ -109,14 +109,14 @@ function AuthorProfile({ isAuth }) {
                     >
                       <button
                         type='button'
-                        className='py-3.5 px-7 text-base font-medium text-indigo-400 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200 '
+                        className='py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-violet-700 rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200 '
                       >
                         Change picture
                       </button>
                     </ImagePicker>
                     <button
                       type='button'
-                      className='py-3.5 px-7 text-base font-medium text-indigo-900 focus:outline-none bg-white rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200 '
+                      className='py-3.5 px-7 text-base font-medium text-indigo-700 focus:outline-none bg-indigo-100 rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200 '
                     >
                       Delete picture
                     </button>

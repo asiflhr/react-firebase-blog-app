@@ -6,6 +6,7 @@ body {
   margin: 0%;
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #ddd6fe;
 }
 
 nav {
@@ -138,7 +139,7 @@ textarea {
 .authorsPage {
   width: 100%;
   max-width: 1000px;
-  min-height: calc(100vh - 80px);
+  /* min-height: calc(100vh - 80px); */
   height: auto;
   display: flex;
   flex-wrap: wrap;

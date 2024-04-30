@@ -30,18 +30,18 @@ function CreatePost({ isAuth }) {
   }, [])
 
   return (
-    <div className='createPostPage flex justify-center lg:flex-row flex-col gap-10 lg:mt-0 mt-36'>
+    <div className='createPostPage flex justify-center lg:flex-row flex-col gap-10 lg:mt-0 mt-36 bg-violet-200'>
       <img
-        src='https://media.istockphoto.com/id/1335774549/photo/night-study-online-learning-woman-typing.jpg?s=612x612&w=0&k=20&c=_ykNUKYdMg77n-YtO3O1qi0MMGP0k4mh-Uhp72dQE-8='
+        src='https://media.istockphoto.com/id/1164538944/vector/woman-with-laptop-studying-or-working-concept-table-with-books-lamp-coffee-cup-vector.jpg?s=612x612&w=0&k=20&c=VhUj_AZoUnilUKdRessjsK6JQUjXCfum7RQyuzOr6_0='
         alt=''
         className='rounded-3xl shadow-lg'
       />
-      <div className='cpContainer rounded-3xl shadow-lg'>
-        <h1>Create A Post</h1>
+      <div className='cpContainer rounded-3xl shadow-lg bg-violet-900'>
+        <h1 className='text-3xl font-bold'>Write Something to Share</h1>
         <div className='inputGp'>
           <label> Title:</label>
           <input
-            className='text-teal-800'
+            className='text-violet-800'
             placeholder='Title...'
             onChange={(event) => {
               setTitle(event.target.value)
@@ -51,7 +51,7 @@ function CreatePost({ isAuth }) {
         <div className='inputGp'>
           <label> Post:</label>
           <textarea
-            className='text-teal-800'
+            className='text-violet-800'
             placeholder='Post...'
             onChange={(event) => {
               setPostText(event.target.value)

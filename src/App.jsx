@@ -22,8 +22,8 @@ function App() {
 
   return (
     <Router>
-      <nav className='navbar fixed top-0'>
-        <div className='flex mx-auto max-w-[1000px] justify-between w-full bg-[#eaf8f7] h-full flex-wrap'>
+      <nav className='navbar fixed top-0 bg-violet-200 shadow-violet-300 shadow-sm'>
+        <div className='flex mx-auto max-w-[1000px] justify-between w-full h-full flex-wrap'>
           <Link to='/'>
             <img
               width='150px'
@@ -32,7 +32,7 @@ function App() {
             />
           </Link>
 
-          <div className='flex gap-4 items-center flex-wrap'>
+          <div className='flex gap-4 items-center flex-wrap text-violet-800'>
             <Link to='/'> Home </Link>
             <Link to='/list-authors'> List Authors </Link>
             {!isAuth ? (
@@ -43,7 +43,7 @@ function App() {
                 <Link to='/profile'> Profile </Link>
                 <button
                   onClick={signUserOut}
-                  className='ml-3 font-bold h-fit bg-gradient-to-bl from-rose-800 to-red-600 px-4 py-2 rounded-lg shadow-lg'
+                  className='ml-3 font-bold h-fit bg-gradient-to-bl from-violet-600 to-violet-800 px-4 py-2 rounded-lg shadow-lg text-violet-100'
                 >
                   Log Out
                 </button>
